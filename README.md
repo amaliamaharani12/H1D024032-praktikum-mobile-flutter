@@ -8,7 +8,7 @@ Project ini dibuat untuk memenuhi tugas **Modul 1: Bahasa Pemrograman Dart** pad
 
 - **Nama       :** Amalia Maharani Andessy
 - **NIM        :** H1D024032
-- **Shift KRS  :** B
+- **Shift KRS  :** E
 - **Shift Baru :** F
 
 ---
