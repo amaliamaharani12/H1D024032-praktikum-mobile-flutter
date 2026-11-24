@@ -18,6 +18,7 @@ Repositori ini berisi kumpulan tugas dan implementasi modul praktikum pada mata 
 2. [Modul 2: Pengenalan dan Desain Framework Flutter](#modul-2-pengenalan-dan-desain-framework-flutter)
 3. [Modul 3: Routes, Side Menu, Login dan Local Storage Framework Flutter](#modul-3-routes-side-menu-login-dan-local-storage-framework-flutter)
 4. [Modul 4: Operasi CRUD dengan API CodeIgniter 4](#modul-4-operasi-crud-dengan-api-codeigniter-4)
+5. [Modul 5: Integrasi Flutter dengan REST API CodeIgniter 4](#modul-5-integrasi-flutter-dengan-rest-api-codeigniter-4)
 
 ---
 
@@ -534,5 +535,103 @@ Simpan hasil screenshot dari layar HP ke dalam folder `screenshots/` di root rep
 > Letakkan screenshot di: `screenshots/modul4_ubah_produk.png`
 
 ![Form Ubah Produk](screenshots/modul4_ubah_produk.png)
+
+---
+---
+
+# Modul 5: Integrasi Flutter dengan REST API CodeIgniter 4
+
+## Deskripsi Praktikum
+Praktikum Modul 5 merupakan kelanjutan dari aplikasi **`tokokita`** (Modul 4) yang menghubungkan antarmuka pengguna Flutter secara penuh ke **Backend RESTful API CodeIgniter 4 (`toko-api`)**. Pada modul ini diimplementasikan:
+
+1. **Helper Modul (`lib/helpers/`)**:
+   - `user_info.dart`: Mengelola penyimpanan sesi login pengguna (`token` dan `userID`) secara lokal menggunakan `shared_preferences`.
+   - `app_exception.dart`: Penanganan error (*Custom Exception Handling*) untuk berbagai kode status HTTP.
+   - `api.dart`: Pembungkus HTTP client (`GET`, `POST`, `PUT`, `DELETE`) dengan header `Authorization: Bearer <token>`.
+   - `api_url.dart`: Konfigurasi terpusat seluruh endpoint REST API (`/registrasi`, `/login`, `/produk`, `/produk/{id}/update`, `/produk/{id}`).
+2. **Arsitektur BLoC / Controller (`lib/bloc/`)**:
+   - `registrasi_bloc.dart`: Mengirim request registrasi akun ke endpoint `POST /registrasi`.
+   - `login_bloc.dart`: Mengirim request autentikasi ke endpoint `POST /login`.
+   - `logout_bloc.dart`: Menghapus sesi token dari local storage saat logout.
+   - `produk_bloc.dart`: Mengelola operasi CRUD produk ke REST API (`getProduks`, `addProduk`, `updateProduk`, `deleteProduk`).
+3. **Common Dialog Widget (`lib/widget/`)**:
+   - `success_dialog.dart`: Custom pop-up dialog informasi ketika operasi berhasil (**SUKSES**).
+   - `warning_dialog.dart`: Custom pop-up dialog informasi ketika operasi gagal (**GAGAL**).
+4. **Integrasi Penuh Halaman UI (`lib/ui/` & `lib/main.dart`)**:
+   - Pengecekan status login otomatis pada `main.dart` (`isLogin()`).
+   - Integrasi halaman Registrasi, Login, Logout, Tampil List Produk (`FutureBuilder`), Tambah Produk (`simpan()`), Ubah Produk (`ubah()`), dan Hapus Produk (`confirmHapus()`).
+
+---
+
+## Struktur Folder Project Modul 5
+
+```text
+modul5/
+├── toko-api/                              # Backend CodeIgniter 4 RESTful API
+├── lib/
+│   ├── main.dart                          # Entry point & pengecekan session token
+│   ├── helpers/
+│   │   ├── api.dart                       # HTTP request helper
+│   │   ├── api_url.dart                   # Daftar konstanta URL endpoint API
+│   │   ├── app_exception.dart             # Custom exception error handling
+│   │   └── user_info.dart                 # Manajemen token & userID SharedPreferences
+│   ├── bloc/
+│   │   ├── login_bloc.dart                # BLoC autentikasi login
+│   │   ├── logout_bloc.dart               # BLoC hapus sesi logout
+│   │   ├── registrasi_bloc.dart           # BLoC pendaftaran member
+│   │   └── produk_bloc.dart               # BLoC CRUD data produk
+│   ├── model/
+│   │   ├── login.dart                     # Model parsing JSON Login
+│   │   ├── registrasi.dart                # Model parsing JSON Registrasi
+│   │   └── produk.dart                    # Model parsing JSON Produk
+│   ├── widget/
+│   │   ├── success_dialog.dart            # Dialog custom notifikasi SUKSES
+│   │   └── warning_dialog.dart            # Dialog custom notifikasi GAGAL
+│   └── ui/
+│       ├── registrasi_page.dart           # UI & fungsi submit Registrasi ke API
+│       ├── login_page.dart                # UI & fungsi submit Login ke API
+│       ├── produk_page.dart               # UI List Produk (FutureBuilder API) & Logout
+│       ├── produk_form.dart               # UI & fungsi Simpan / Ubah Produk ke API
+│       └── produk_detail.dart             # UI Detail & fungsi Hapus Produk ke API
+├── pubspec.yaml                           # Dependensi http & shared_preferences
+└── README.md                              # Dokumentasi Modul 5
+```
+
+---
+
+## Cara Menjalankan Aplikasi Modul 5
+
+1. Buka terminal pada folder `modul5`:
+   ```powershell
+   cd modul5
+   flutter pub get
+   flutter run
+   ```
+2. Pastikan backend API `toko-api` aktif pada web server dan `ApiUrl.baseUrl` di `lib/helpers/api_url.dart` sesuai dengan IP server.
+
+---
+
+## Hasil Tangkapan Layar (Screenshots) Modul 5
+
+### 1. Registrasi Berhasil (Modul Hal. 18)
+> Letakkan screenshot di: `screenshots/modul5_registrasi_sukses.png`
+
+![Registrasi Sukses](screenshots/modul5_registrasi_sukses.png)
+
+### 2. Login Gagal / Warning Dialog (Modul Hal. 21)
+> Letakkan screenshot di: `screenshots/modul5_login_gagal.png`
+
+![Login Gagal](screenshots/modul5_login_gagal.png)
+
+### 3. List Produk dari REST API (Modul Hal. 27)
+> Letakkan screenshot di: `screenshots/modul5_list_produk_api.png`
+
+![List Produk API](screenshots/modul5_list_produk_api.png)
+
+### 4. Tambah & Ubah Produk ke REST API
+> Letakkan screenshot di: `screenshots/modul5_crud_produk.png`
+
+![CRUD Produk](screenshots/modul5_crud_produk.png)
+
 
 
